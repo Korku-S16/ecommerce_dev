@@ -22,7 +22,7 @@ const products = [
   },
   {
     id: 4,
-    title: "Tank top for women",
+    title: "White Tank top for women",
     price: "₹1490",
     image: "/4.png",
   },
