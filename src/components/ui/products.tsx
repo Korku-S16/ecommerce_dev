@@ -22,7 +22,7 @@ const products = [
   },
   {
     id: 4,
-    title: "White Casual Dress",
+    title: "Tank top for women",
     price: "₹1490",
     image: "/4.png",
   },
