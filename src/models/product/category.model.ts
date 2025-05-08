@@ -1,0 +1,3 @@
+//name
+//isAvailabel 
+//isFeatured: boolean;

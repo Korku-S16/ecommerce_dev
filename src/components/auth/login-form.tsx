@@ -19,6 +19,7 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { LoginSchema } from "../../../schema";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
     const [loading, setLoading] = useState(false);
