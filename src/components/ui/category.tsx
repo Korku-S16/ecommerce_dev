@@ -24,11 +24,11 @@ const Category = () => {
         <h2 className="text-xl font-semibold mb-6 text-left text-gray-800">
           Browse By Category
         </h2>
-        <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
+        <div className="flex flex-wrap gap-6 justify-center items-center sm:justify-start">
           {categories.map((cat, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center bg-gray-100 rounded-lg px-6 py-10 w-46 hover:bg-gray-200 transition"
+              className="flex flex-col items-center justify-center bg-gray-100 rounded-lg px-6 py-10 w-36 h-36 hover:bg-gray-200 transition"
             >
               <div className="text-3xl text-black mb-2">{cat.icon}</div>
               <span className="text-sm text-center text-black font-medium">
