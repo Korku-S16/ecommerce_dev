@@ -26,6 +26,30 @@ const products = [
     price: "₹1490",
     image: "/4.png",
   },
+  {
+    id: 5,
+    title: "Blue heaven complete makeup kit",
+    price: "₹19999",
+    image: "/5.png",
+  },
+  {
+    id: 6,
+    title: "Galaxy Z Fold5 Unlocked | 256GB | Phantom Black",
+    price: "₹75300",
+    image: "/6.png",
+  },
+  {
+    id: 7,
+    title: "Galaxy Buds FE Graphite",
+    price: "₹11999",
+    image: "/7.png",
+  },
+  {
+    id: 8,
+    title: "Apple iPad 9 10.2 inch",
+    price: "₹67490",
+    image: "/8.png",
+  },
 ];
 
 const tabs = ["New Arrival", "Bestseller", "Featured Products"];
@@ -35,7 +59,7 @@ const ProductGrid = () => {
 
   return (
     <div className=" mt-6">
-      <div className="ml-6 flex gap-6 border-b">
+      <div className="ml-12 mr-2 flex gap-6 border-b">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -51,7 +75,7 @@ const ProductGrid = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-6 ml-12 mr-2">
         {products.map((item) => (
           <div
             key={item.id}

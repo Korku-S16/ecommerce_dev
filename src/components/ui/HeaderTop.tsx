@@ -1,12 +1,12 @@
 import React from "react";
 import { BsSearch } from "react-icons/bs";
-import { FiHeart, FiUser, FiShoppingCart } from "react-icons/fi";
+import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
 
 const HeaderTop = () => {
   return (
     <div className="font-sans">
       <header className="bg-white shadow px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="text-2xl font-bold ml-6 sm:ml-12">Logo</div>
+        <div className="text-2xl font-bold mx-auto sm:ml-12 sm:mr-0">Logo</div>
 
         <div className="w-full sm:w-auto flex-1 relative max-w-md">
           <input
@@ -19,7 +19,6 @@ const HeaderTop = () => {
             size={18}
           />
         </div>
-
         <nav className="hidden md:flex space-x-10 text-sm">
           <a href="#" className="text-gray-700 hover:text-black font-medium">
             Home
@@ -34,7 +33,6 @@ const HeaderTop = () => {
             Contact Us
           </a>
         </nav>
-
         <div className="hidden sm:flex items-center space-x-4 text-xl mr-6 sm:mr-16">
           <button title="Favorites">
             <FiHeart />
@@ -47,6 +45,20 @@ const HeaderTop = () => {
           </button>
         </div>
       </header>
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center py-2 z-50 text-xl">
+        <button title="Home">
+          <FiHome />
+        </button>
+        <button title="Favorites">
+          <FiHeart />
+        </button>
+        <button title="Cart">
+          <FiShoppingCart />
+        </button>
+        <button title="Profile">
+          <FiUser />
+        </button>
+      </div>
     </div>
   );
 };
