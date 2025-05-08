@@ -1,7 +1,7 @@
 import Carousel from "@/app/home/component/carousel";
 import Category from "@/app/home/component/category";
-import Product from "@/components/ui/products";
-import Popular from "@/components/ui/popular";
+import Product from "@/app/home/component/products";
+import Popular from "@/app/home/component/popular";
 
 const YourPage = () => {
   return (
