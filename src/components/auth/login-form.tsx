@@ -19,6 +19,7 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { LoginSchema } from "../../../schema";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
     const [loading, setLoading] = useState(false);
@@ -31,9 +32,13 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
     setLoading(true);
-    console.log(data);
+    const res = await signIn('credentials',{
+      username:data.email,
+      password:data.password
+    })
+    console.log(res);
   };
 
   const { pending } = useFormStatus();
