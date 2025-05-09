@@ -1,5 +1,5 @@
 // types/next-auth.d.ts (or wherever you manage your types)
-import { Role } from "./enumTypes";
+
 import { DefaultSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import mongoose from "mongoose";

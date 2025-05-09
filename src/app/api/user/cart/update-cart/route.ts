@@ -17,19 +17,26 @@ export async function POST(req: NextRequest) {
 
     if (isProduct) {
       isProduct.quantity += quantity;
+      await cartList.save();
       return NextResponse.json({
         message:"UPDATED PRODUCT QUANTITY",
         statusCode:200,
-        
-
+        success:true
       })
+      
     } else {
       cartList.products.push({
         productId: productId,
         quantity: quantity,
       });
+      await cartList.save();
+      return NextResponse.json({
+        message:"NEW PRODUCT ADDED IN CART",
+        statusCode:200,
+        success:true
+      })
     }
-    await cartList.save();
+    
   }
 
   const isProductAlreadyInCart = await CartModel.findOne({
