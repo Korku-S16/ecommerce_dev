@@ -2,104 +2,84 @@ import connectToDB from "@/lib/db";
 import { AccountModel } from "@/models/account.model";
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
-import  CredentialsProvider  from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-import { NextResponse } from "next/server";
-export const authOptions:NextAuthOptions = {
-providers:[
+export const authOptions: NextAuthOptions = {
+  providers: [
     CredentialsProvider({
-        id:"credentials",
-        name:"credentials",
-
-        credentials:{
-            username:{
-                label:"Email or Phone  ",
-                type:"email",
-                placeholder:"Enter your email/phone number",
-            },
-            password:{
-                label:"Password",
-                type:"password",
-                placeholder:"Enter Password"
-            }
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        username: {
+          label: "Email or Phone",
+          type: "text",
+          placeholder: "Enter your email or phone number",
         },
-        async authorize(credentials):Promise<any>{
-            await connectToDB()
-            try {
-                console.log(credentials);
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Enter your password",
+        },
+      },
+      async authorize(credentials): Promise<any> {
+        await connectToDB();
 
-                if (!credentials){
-                    return NextResponse.json({
-                        message:"INVALID CREDENTIALS",
-                        statusCode:500,
-                        success:false
-                    })
-                }
-                  
-                const username = credentials?.username;
-                const password = credentials?.password;
+        try {
+          if (!credentials) return null;
 
-                const user = await AccountModel.findOne({
-                    $or:[
-                        {email:username},{phoneNO:username}
-                    ]
-                })
+          const { username, password } = credentials;
 
-                if (!user){
-                    return NextResponse.json({
-                     message:"USER NOT REGISTERED",
-                     statusCode:404,
-                     success:false 
-                    })
-                }
-                const isPasswordCorrect = await bcrypt.compare(
-                    password,
-                    user.password
-                );
+          const user = await AccountModel.findOne({
+            $or: [{ email: username }, { phoneNO: username }],
+          });
 
-                if (!isPasswordCorrect){
-                    return NextResponse.json({
-                        message:"INCORRECT PASSWORD",
-                        statusCode:403,
-                        success:false
-                    })
-                }
-                return user;
-            } catch (error) {
-                const errMsg = error instanceof Error ? error.message: "SOMETHING WENT WRONG"
-                
+          if (!user) return null;
 
-                return NextResponse.json({
-                    message:`ERR: ${errMsg}`,
-                    status: 500,
-                    success:false
-                })
-            }
+          const isValid = await bcrypt.compare(password, user.password);
+          if (!isValid) return null;
+
+          // Return only necessary info
+          return {
+            _id: user._id.toString(),
+            email: user.email,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("Authorize Error:", error);
+          return null;
         }
-    })
-],
-callbacks:{
-    async jwt({account,user,token}){
-      token.accessToken = account?.access_token
-      token.role = user.role
-      token._id = user._id!
+      },
+    }),
+  ],
 
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token._id = user._id!;
+        token.email = user.email;
+        token.accessToken = user.accessToken
+        // token.role = user.role;
+      }
       return token;
     },
-    async session ({session,token}){
-       session.accessToken = token.accessToken!;
-       session.role = token.role!;
-       session._id = token._id
 
-       return session
+    async session({ session, token }) {
+      session._id = token._id;
+      session.user.email = token.email;
+      session.accessToken= token.accessToken!
+    //   session.user.role = token.role;
+      return session;
     },
-},
-session:{
-    strategy:'jwt',
-    maxAge:30*24*60*60
-},
-pages:{
-    signIn:'/auth/login'
-},
-secret:process.env.NEXTAUTH_SECRET
-}
+  },
+
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
+  pages: {
+    signIn: "/auth/login",
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
+};
