@@ -38,6 +38,7 @@ const LoginForm = () => {
       username:data.email,
       password:data.password
     })
+    
     console.log(res);
   };
 
