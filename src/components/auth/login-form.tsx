@@ -20,6 +20,7 @@ import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { LoginSchema } from "../../../schema";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
     const [loading, setLoading] = useState(false);
@@ -31,14 +32,18 @@ const LoginForm = () => {
       password: "",
     },
   });
+  const router = useRouter()
 
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
     setLoading(true);
     const res = await signIn('credentials',{
       username:data.email,
-      password:data.password
+      password:data.password,
+      redirect:true
     })
     
+    
+   router.push('/home')
     console.log(res);
   };
 
