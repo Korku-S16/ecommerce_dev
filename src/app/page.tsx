@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 
 export default function Home() {
   const {data,status} = useSession()
-  console.log(data)
+  console.log(data?.accessToken)
 
   return (
     <div>
