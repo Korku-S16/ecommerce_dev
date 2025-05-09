@@ -6,7 +6,7 @@ interface Account extends Document {
   fullName: string;
   email: string;
   password: string;
-  phoneNO?: string;
+ 
   role: string;
   isVerified: boolean;
 }
@@ -18,17 +18,18 @@ const accountSchema: Schema<Account> = new Schema(
       required: true,
       trim: true,
     },
+    password:{
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
       trim: true,
       unique: true,
     },
-    phoneNO: {
-      type: String,
-      required: false,
-      unique: true,
-    },
+    
     role: {
       type: String,
       enum: Object.values(Role),

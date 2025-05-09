@@ -32,9 +32,13 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
     setLoading(true);
-    console.log(data);
+    const res = await signIn('credentials',{
+      username:data.email,
+      password:data.password
+    })
+    console.log(res);
   };
 
   const { pending } = useFormStatus();

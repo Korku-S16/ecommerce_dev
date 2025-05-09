@@ -19,6 +19,8 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { RegisterSchema } from "../../../schema";
+import useApiHandler from "@/hooks/useApiHandler";
+import axios from "axios";
 
 const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
@@ -31,10 +33,13 @@ const RegisterForm = () => {
         confirmPassword: "",
       },
     });
+
+    const apiCaller = useApiHandler();
   
     const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
+      const res = apiCaller("/api/register",axios.post,{email:data.email, name:data.name, password:data.password })
       setLoading(true);
-      console.log(data);
+      console.log(res);
     };
   
     const { pending } = useFormStatus();

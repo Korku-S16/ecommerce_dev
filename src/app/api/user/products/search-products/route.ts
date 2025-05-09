@@ -1,5 +1,7 @@
 import connectToDB from "@/lib/db";
 import { ProductModel } from "@/models/product/product.model";
+import { SubcategoryModel } from "@/models/product/subCategory.model";
+import { SearchHistoryModel } from "@/models/user/userBrowseHistory";
 import { Role } from "@/types/enumTypes";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
@@ -8,7 +10,7 @@ export async function POST(req: NextRequest) {
   await connectToDB();
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    
+
     if (!token) {
       return NextResponse.json({
         message: "LOGIN FIRST",
@@ -18,6 +20,12 @@ export async function POST(req: NextRequest) {
     }
 
     const { role } = token;
+    const { query, page = 1 } = await req.json();
+
+    // matching with start character and case insensitive
+    const regex = new RegExp(`^${query}`);
+
+    const limit = 10;
 
     if (role !== Role.CUSTOMER) {
       return NextResponse.json({
@@ -27,7 +35,31 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const products = await ProductModel.find({}).populate("subcategory");
+    const totalDocs = await ProductModel.countDocuments({
+      name: { $regex: regex, $options: "i" },
+    });
+
+    if (totalDocs === 0) {
+      return NextResponse.json({
+        message: "NO PRODUCTS FOUND",
+        statusCode: 404,
+        success: false,
+      });
+    }
+
+    const products = await ProductModel.find({
+      name: { $regex: regex, $options: "i" },
+    })
+      .populate("subcategory")
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const totalPages = Math.ceil(totalDocs / limit);
+    const data = {
+      products,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPreviousPage: page > 1,
+    };
 
     if (!products || products.length == 0) {
       return NextResponse.json({
@@ -36,12 +68,21 @@ export async function POST(req: NextRequest) {
         success: false,
       });
     }
+    // adding in searchHistoryModel
+    const searchLogs = products.map((p) => {
+      return {
+        product: p._id,
+        userId: token._id,
+      };
+    });
+
+    await SearchHistoryModel.insertMany(searchLogs);
 
     return NextResponse.json({
       message: "SUCCESSFULLY FETCHED PRODUCT",
       statusCode: 200,
       success: true,
-      data: products,
+      data,
     });
   } catch (error) {
     const errMsg =
