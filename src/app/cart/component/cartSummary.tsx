@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   subtotal: number;
@@ -9,6 +11,7 @@ const CartSummary: React.FC<Props> = ({ subtotal }) => {
   const shipping = 89;
   const total = subtotal + tax + shipping;
 
+  const router = useRouter();
   return (
     <div className="border p-6 rounded-md w-full max-w-sm">
       <h2 className="font-semibold mb-4">Order Summary</h2>
@@ -44,7 +47,10 @@ const CartSummary: React.FC<Props> = ({ subtotal }) => {
         </div>
       </div>
 
-      <button className="w-full mt-4 bg-black text-white py-2 rounded-md">
+      <button
+        onClick={() => router.push("/step1")}
+        className="w-full mt-4 bg-black text-white py-2 rounded-md"
+      >
         Checkout
       </button>
     </div>

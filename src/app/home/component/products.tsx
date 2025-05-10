@@ -52,7 +52,7 @@ const products = [
   },
 ];
 
-const tabs = ["New Arrival", "Bestseller", "Featured Products"];
+const tabs = ["New Arrival", "Featured Products"];
 
 const ProductGrid = () => {
   const [activeTab, setActiveTab] = useState("New Arrival");

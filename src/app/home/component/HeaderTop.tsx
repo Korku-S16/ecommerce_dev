@@ -1,8 +1,13 @@
+"use client";
 import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { Link } from "react-router-dom";
 
 const HeaderTop = () => {
+  const router = useRouter();
+
   return (
     <div className="font-sans">
       <header className="bg-white shadow px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -26,9 +31,7 @@ const HeaderTop = () => {
           <a href="#" className="text-gray-500 hover:text-black font-medium">
             About
           </a>
-          <a href="#" className="text-gray-500 hover:text-black font-medium">
-            Categories
-          </a>
+
           <a href="#" className="text-gray-500 hover:text-black font-medium">
             Contact Us
           </a>
@@ -37,7 +40,11 @@ const HeaderTop = () => {
           <button title="Favorites">
             <FiHeart />
           </button>
-          <button title="Cart">
+          <button
+            className="cursor-pointer hover:bg-gray "
+            title="Cart"
+            onClick={() => router.push("/cart")}
+          >
             <FiShoppingCart />
           </button>
           <button title="Profile">
@@ -52,7 +59,11 @@ const HeaderTop = () => {
         <button title="Favorites">
           <FiHeart />
         </button>
-        <button title="Cart">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black"
+          title="Cart"
+          onClick={() => router.push("/cart")}
+        >
           <FiShoppingCart />
         </button>
         <button title="Profile">
