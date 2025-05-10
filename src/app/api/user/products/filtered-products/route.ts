@@ -6,7 +6,7 @@ import { ProductType } from "@/types/enumTypes";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   await connectToDB();
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         success: false,
       });
     }
-    const limit = 10;
+    const limit = 8;
 
     const { searchParams } = new URL(req.url);
     const page = Number(searchParams.get("page")) || 1;
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       popularProducts: [],
     };
 
-    const randomProducts = await ProductModel.find().limit(10);
+    const randomProducts = await ProductModel.find().limit(limit);
 
     if (productType === ProductType.newlyCreated) {
       const totalnewArrivalProducts = await ProductModel.countDocuments();
@@ -57,9 +57,30 @@ export async function POST(req: NextRequest) {
         hasPreviousPage: page > 1,
       };
       products.newArrival = newlyCreatedProductsPaginated || randomProducts;
-    }
+    } else if (productType === ProductType.featuredProducts) {
+      const totalFeaturedProducts = await SearchHistoryModel.countDocuments({
+        userId: token._id,
+      });
+      const totalFeaturedPages = totalFeaturedProducts / limit;
 
-    if (productType === ProductType.popularProducts) {
+      const featuredProducts = await SearchHistoryModel.find({
+        userId: token._id,
+      })
+        .populate("product")
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+      const paginatedfeaturedProducts = {
+        featuredProducts,
+        totalFeaturedProducts,
+        totalFeaturedPages,
+        currentPage: page,
+        hasNextPage: page < totalFeaturedPages,
+        hasPreviousPage: page > 1,
+      };
+      products.featuredProducts = paginatedfeaturedProducts || randomProducts;
+    } else {
       const popularProducts = await OrderModel.aggregate([
         { $unwind: "$products" },
         {
@@ -107,32 +128,6 @@ export async function POST(req: NextRequest) {
         hasPreviousPage: page > 1,
       };
       products.popularProducts = popularProductsPaginated || randomProducts;
-    }
-
-    // featured products
-    if (productType === ProductType.featuredProducts) {
-      const totalFeaturedProducts = await SearchHistoryModel.countDocuments({
-        userId: token._id,
-      });
-      const totalFeaturedPages = totalFeaturedProducts / limit;
-
-      const featuredProducts = await SearchHistoryModel.find({
-        userId: token._id,
-      })
-        .populate("product")
-        .skip(skip)
-        .limit(limit)
-        .sort({ createdAt: -1 });
-
-      const paginatedfeaturedProducts = {
-        featuredProducts,
-        totalFeaturedProducts,
-        totalFeaturedPages,
-        currentPage: page,
-        hasNextPage: page < totalFeaturedPages,
-        hasPreviousPage: page > 1,
-      };
-      products.featuredProducts = paginatedfeaturedProducts || randomProducts;
     }
 
     return NextResponse.json({

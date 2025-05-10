@@ -8,7 +8,8 @@ import mongoose, { Model, Schema } from "mongoose"
 interface Category extends Document {
     name:string,
     isAvailable:boolean,
-    isFeatured:boolean
+    isFeatured:boolean,
+    image:string
 }
 
 const categorySchema:Schema<Category> = new Schema({
@@ -23,6 +24,10 @@ const categorySchema:Schema<Category> = new Schema({
     },
     isFeatured:{
         type:Boolean
+    },
+    image:{
+        type:String,
+        required:true
     }
 
 },{timestamps:true})

@@ -50,7 +50,7 @@ export enum Gender {
   Female = "Female",
 }
 export enum ProductType{
-  newlyCreated="NEWLYCREATED",
-  featuredProducts = "FEATUREDPRODUCTS",
+  newlyCreated="New Arrival",
+  featuredProducts = "Featured Products",
   popularProducts = "POPULARPRODUCTS"
 }

@@ -54,8 +54,44 @@ const products = [
 
 const tabs = ["New Arrival", "Featured Products"];
 
-const ProductGrid = () => {
+const ProductGrid = ({featuredProducts,newlyArrived, toggleTab}) => {
   const [activeTab, setActiveTab] = useState("New Arrival");
+
+  const handleTabChange =(tab)=>{
+    setActiveTab(tab)
+    toggleTab(tab)
+  }
+
+  const [newArrivalPage,setNewArrivalPage] = useState(1);
+  const [featuredPage,setFeaturedPage] = useState(1);
+
+
+  // function handleNextPage(page){
+  //  if(activeTab==='New Arrival' && page+1>0){ // from fetured products
+  //    setNewArrivalPage(page+1)
+  //  }
+  //  else if(activeTab==='Featured Products' && page+1>0){
+  //   setFeaturedPage(page+1)
+  //  }
+  // }
+
+  // function handlePreviousPage(page){
+  //   if(activeTab==='New Arrival' && page>0){ 
+  //     setNewArrivalPage(page-1)
+  //   }
+  //   else if(activeTab==='Featured Products' && page-1>1){
+  //    setFeaturedPage(page-1)
+  //   }
+  //  }
+
+  //  function goToPage(page){
+  //   if(activeTab==='New Arrival'){ 
+  //     setNewArrivalPage(page)
+  //   }
+  //   else if(activeTab==='Featured Products'){
+  //    setFeaturedPage(page)
+  //   }
+  //  }
 
   return (
     <div className=" mt-6">
@@ -63,7 +99,7 @@ const ProductGrid = () => {
         {tabs.map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleTabChange(tab)}
             className={`py-2 border-b-2 ${
               activeTab === tab
                 ? "border-black font-semibold"
@@ -76,23 +112,48 @@ const ProductGrid = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-6 ml-12 mr-2">
-        {products.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white p-4 rounded shadow-sm text-center"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-40 object-contain mb-2"
-            />
-            <h3 className="text-sm font-medium">{item.title}</h3>
-            <p className="text-gray-700 mt-1">{item.price}</p>
-            <button className="mt-3 bg-black text-white px-4 py-1 rounded text-sm">
-              Buy Now
-            </button>
-          </div>
-        ))}
+        {
+          activeTab==='New Arrival'?(
+            products.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white p-4 rounded shadow-sm text-center"
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-40 object-contain mb-2"
+                />
+                <h3 className="text-sm font-medium">{item.title}</h3>
+                <p className="text-gray-700 mt-1">{item.price}</p>
+                <button className="mt-3 bg-black text-white px-4 py-1 rounded text-sm">
+                  Buy Now
+                </button>
+              </div>
+            ))
+          ):(
+            products.map((item,idx) => (
+              <div
+                key={item.id}
+                className="bg-white p-4 rounded shadow-sm text-center"
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-40 object-contain mb-2"
+                />
+                <h3 className="text-sm font-medium">{item.title}</h3>
+                <p className="text-gray-700 mt-1">{item.price}</p>
+                
+
+                <button className="mt-3 bg-black text-white px-4 py-1 rounded text-sm">
+                  Buy Now
+                </button>
+              </div>
+            ))
+          )
+        }
+        
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ const useApiHandler = () => {
           icon: <CheckCircle className="w-5 h-5 text-green-500" />,
           duration: 2000,
         });
-
+         console.log(res.data)
         return res.data;
       } else {
         toast.dismiss(toastId);

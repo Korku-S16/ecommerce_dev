@@ -5,6 +5,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import  Link  from "next/link";
 
 const shippingOptions = [
   {
@@ -97,12 +98,13 @@ const ShippingPage = () => {
       </div>
 
       <div className="flex justify-between mt-10">
+        <Link href={'/step1'}>
         <button
-          onClick={() => router.push("/step1")}
           className="px-6 py-2 border border-black rounded-md text-black hover:bg-black hover:text-white transition"
         >
           Back
         </button>
+        </Link>
         <button
           onClick={() => router.push("/step3")}
           disabled={selectedOption === null}

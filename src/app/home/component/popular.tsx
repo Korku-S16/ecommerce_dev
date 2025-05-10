@@ -33,7 +33,7 @@ const products: Product[] = [
   },
 ];
 
-const PopularProducts: React.FC = () => {
+const PopularProducts: React.FC = ({popularProducts}) => {
   return (
     <div className="container mx-auto py-10 px-4 sm:px-10 ml-6 lg:ml-0">
       <h2 className="text-2xl font-medium mb-6">Popular Products</h2>
