@@ -5,6 +5,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { Edit, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -119,23 +120,23 @@ const CheckoutPage = () => {
       </div>
 
       <div className="flex justify-between mt-10">
-        <button
-          onClick={() => router.push("/cart")}
-          className="px-6 py-2 border border-black rounded-md text-black hover:bg-black hover:text-white transition"
-        >
-          Back
-        </button>
-        <button
-          onClick={() => router.push("/step2")}
-          disabled={selectedAddress === null}
-          className={`px-6 py-2 rounded-md transition ${
-            selectedAddress === null
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-black text-white hover:bg-gray-800"
-          }`}
-        >
-          Next
-        </button>
+        <Link href={"/cart"}>
+          <button className="px-6 py-2 border border-black rounded-md text-black hover:bg-black hover:text-white transition">
+            Back
+          </button>
+        </Link>
+        <Link href={"/step2"}>
+          <button
+            disabled={selectedAddress === null}
+            className={`px-6 py-2 rounded-md transition ${
+              selectedAddress === null
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-800"
+            }`}
+          >
+            Next
+          </button>
+        </Link>
       </div>
     </div>
   );
