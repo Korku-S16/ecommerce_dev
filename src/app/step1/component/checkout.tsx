@@ -32,9 +32,9 @@ const CheckoutPage = () => {
     updated.splice(index, 1);
     setAddresses(updated);
     if (selectedAddress === index) {
-      setSelectedAddress(null); // Deselect if the deleted one was selected
+      setSelectedAddress(null);
     } else if (selectedAddress !== null && selectedAddress > index) {
-      setSelectedAddress(selectedAddress - 1); // Adjust index if after deleted
+      setSelectedAddress(selectedAddress - 1);
     }
   };
 
@@ -125,7 +125,15 @@ const CheckoutPage = () => {
         >
           Back
         </button>
-        <button className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition">
+        <button
+          onClick={() => router.push("/step2")}
+          disabled={selectedAddress === null}
+          className={`px-6 py-2 rounded-md transition ${
+            selectedAddress === null
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+              : "bg-black text-white hover:bg-gray-800"
+          }`}
+        >
           Next
         </button>
       </div>
