@@ -1,4 +1,4 @@
-import { Gender } from "@/src/types/enumTypes";
+import { Gender } from "@/types/enumTypes";
 import mongoose, { Model, Schema } from "mongoose";
 
 
