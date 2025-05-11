@@ -23,12 +23,15 @@ function Card({ productCard }: ProductCardProps) {
         </div>
 
         <div className="flex items-center justify-center ">
-          <img src="/phone.png" className=" object-cover w-24 h-24  "></img>
+          <img
+            src={productCard.imageUrl}
+            className=" object-cover w-24 h-24  "
+          ></img>
         </div>
 
         <div className="flex flex-col gap-2 mt-2">
-          <p className="">Apple </p>
-          <p className=" text-2xl font-bold text-black">₹ 11111</p>
+          <p className="">{productCard.name}</p>
+          <p className=" text-2xl font-bold text-black">₹{productCard.price}</p>
         </div>
         <Button>Buy Now</Button>
       </div>

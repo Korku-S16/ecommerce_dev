@@ -19,9 +19,7 @@ const YourPage = () => {
     tab: "New Arrival",
   });
 
-  
-
-  const changeTab = (data) => {
+  const changeTab = (data: { tabName?: string; page?: number }) => {
     if (data.tabName) {
       setParams({ ...params, tab: data.tabName });
     }
@@ -29,29 +27,21 @@ const YourPage = () => {
       setParams({ ...params, page: data.page });
     }
   };
-  // pagination
-
-  // const page = Number(searchParams.get("page")) || 1;
-  // const productType = searchParams.get("productType");
 
   const fetchProducts = async () => {
-    // D:\client-projects\ecommerce_dev\src\app\api\user\products\filter-products
-
     const url = `/api/user/products/filtered-products?page=${params.page}`;
     const res = await apiCaller(url, axios.get);
   };
-
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-
   return (
     <div>
       <Carousel />
       <Category />
-      <Product  featuredProducts={[]} newlyArrived={[]} toggleTab={changeTab}/>
+      <Product featuredProducts={[]} newlyArrived={[]} toggleTab={changeTab} />
       <Popular />
     </div>
   );
