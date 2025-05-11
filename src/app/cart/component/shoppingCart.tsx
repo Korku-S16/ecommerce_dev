@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShoppingCartItem from "../../cart/component/cartItem";
 import CartSummary from "../../cart/component/cartSummary";
 import { CartItem } from "./types";
+import useApiHandler from "@/hooks/useApiHandler";
+import axios from "axios";
 
 const initialCart: CartItem[] = [
   {
@@ -32,7 +34,18 @@ const initialCart: CartItem[] = [
 ];
 
 const ShoppingCart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCart);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const apiCaller = useApiHandler();
+
+  async function handleFetchCart() {
+    const res = await apiCaller(`/api/user/cart/fetch-cartlist`, axios.get);
+    console.log(res);
+    setCartItems(res.data)
+  }
+  useEffect(() => {
+    handleFetchCart();
+  }, []);
 
   const handleQuantityChange = (id: string, quantity: number) => {
     if (quantity < 1) return;
@@ -49,21 +62,27 @@ const ShoppingCart: React.FC = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+  const isCartItems = cartItems?.length > 0;
 
   return (
     <div className="flex flex-col lg:flex-row justify-between p-8 gap-8">
       <div className="flex-1">
-        <h1 className="text-lg font-semibold mb-6">Shopping Cart</h1>
-        {cartItems.map((item) => (
-          <ShoppingCartItem
-            key={item.id}
-            item={item}
-            onQuantityChange={handleQuantityChange}
-            onRemove={handleRemove}
-          />
-        ))}
+        {!isCartItems ? (
+          <div className="flex justify-center items-center ">
+            NO ITEMS FOUND IN CART
+          </div>
+        ) : (
+          cartItems?.map((item) => (
+            <ShoppingCartItem
+              key={item.id}
+              item={item}
+              onQuantityChange={handleQuantityChange}
+              onRemove={handleRemove}
+            />
+          ))
+        )}
       </div>
-      <CartSummary subtotal={subtotal} />
+      {!isCartItems ? "" : <CartSummary subtotal={subtotal} />}
     </div>
   );
 };

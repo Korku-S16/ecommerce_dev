@@ -3,10 +3,14 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
+import useApiHandler from "@/hooks/useApiHandler";
+import axios from "axios";
 
 const HeaderTop = () => {
   const router = useRouter();
+
+
 
   return (
     <div className="font-sans">
@@ -25,38 +29,60 @@ const HeaderTop = () => {
           />
         </div>
         <nav className="hidden md:flex space-x-10 text-sm">
-          <a href="#" className="text-gray-700 hover:text-black font-medium">
+          <Link
+            href="/home"
+            className="text-gray-700 hover:text-black font-medium"
+          >
             Home
-          </a>
-          <a href="#" className="text-gray-500 hover:text-black font-medium">
+          </Link>
+          <Link href="#" className="text-gray-500 hover:text-black font-medium">
             About
-          </a>
+          </Link>
 
-          <a href="#" className="text-gray-500 hover:text-black font-medium">
+          <Link href="#" className="text-gray-500 hover:text-black font-medium">
             Contact Us
-          </a>
+          </Link>
         </nav>
         <div className="hidden sm:flex items-center space-x-4 text-xl mr-6 sm:mr-16">
-          <button title="Favorites">
+          <button
+            className="text-gray-700 cursor-pointer hover:text-black "
+            title="Favourites"
+            onClick={() => router.push("/productDetails")}
+          >
             <FiHeart />
           </button>
+          <Link href="/cart">
           <button
-            className="cursor-pointer hover:bg-gray "
+           
+            className="text-gray-700 cursor-pointer hover:text-black "
             title="Cart"
-            onClick={() => router.push("/cart")}
+            
           >
             <FiShoppingCart />
           </button>
-          <button title="Profile">
+          </Link>
+          <button
+            className="text-gray-700 cursor-pointer hover:text-black"
+            title="Profile"
+            onClick={() => router.push("/profile")}
+          >
             <FiUser />
           </button>
         </div>
       </header>
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center py-2 z-50 text-xl">
-        <button title="Home">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black "
+          title="Home"
+          onClick={() => router.push("/home")}
+        >
           <FiHome />
         </button>
-        <button title="Favorites">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black"
+          title="Favorites"
+          onClick={() => router.push("/productDetails")}
+        >
           <FiHeart />
         </button>
         <button
@@ -66,7 +92,11 @@ const HeaderTop = () => {
         >
           <FiShoppingCart />
         </button>
-        <button title="Profile">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black"
+          title="Profile"
+          onClick={() => router.push("/profile")}
+        >
           <FiUser />
         </button>
       </div>

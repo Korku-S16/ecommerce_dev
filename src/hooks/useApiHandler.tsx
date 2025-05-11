@@ -22,6 +22,7 @@ const useApiHandler = () => {
 
     try {
       const res = data ? await axiosMethod(url, data) : await axiosMethod(url);
+      console.log(res)
 
       if (res.data?.statusCode === 200) {
         toast.dismiss(toastId);
@@ -31,7 +32,6 @@ const useApiHandler = () => {
           duration: 2000,
         });
          console.log(res.data)
-        return res.data;
       } else {
         toast.dismiss(toastId);
 
@@ -39,7 +39,10 @@ const useApiHandler = () => {
           icon: <XCircle className="text-red-500" />,
           duration: 3000,
         });
+        
       }
+      return res.data;
+
     } catch (error) {
       toast.dismiss(toastId);
 
