@@ -41,7 +41,7 @@ const ShoppingCart: React.FC = () => {
   async function handleFetchCart() {
     const res = await apiCaller(`/api/user/cart/fetch-cartlist`, axios.get);
     console.log(res);
-    setCartItems(res.data)
+    setCartItems(res.data);
   }
   useEffect(() => {
     handleFetchCart();
@@ -58,7 +58,7 @@ const ShoppingCart: React.FC = () => {
     setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
-  const subtotal = cartItems.reduce(
+  const subtotal = cartItems?.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import useApiHandler from "@/hooks/useApiHandler";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -21,24 +21,24 @@ import {
 // ];
 
 const Category = () => {
-
   const apiCaller = useApiHandler();
-  const [categories,setCategories] = useState([]);
+  const [categories, setCategories] = useState<
+    { image: string; name: string }[]
+  >([]);
 
-  const fetchCategories = async()=>{
-
-    const url = `/api/user/category/fetch-categories`
-    const res = await apiCaller(url,axios.get)
+  const fetchCategories = async () => {
+    const url = `/api/user/category/fetch-categories`;
+    const res = await apiCaller(url, axios.get);
 
     console.log(res);
-    if(res?.statusCode===200){
-      setCategories(res.data)
+    if (res?.statusCode === 200) {
+      setCategories(res.data);
     }
-  }
+  };
 
-  useEffect(()=>{
-     fetchCategories()
-  },[])
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="px-4 sm:px-16 lg:px-20 py-10">
@@ -46,9 +46,8 @@ const Category = () => {
           Browse By Category
         </h2>
         <div className="flex flex-wrap gap-6 justify-center items-center sm:justify-start">
-          {
-            categories?.length>0 ? (
-              categories?.map((cat, index) => (
+          {categories?.length > 0
+            ? categories?.map((cat, index) => (
                 <div
                   key={index}
                   className="flex flex-col items-center justify-center bg-gray-100 rounded-lg px-6 py-10 w-36 h-36 hover:bg-gray-200 transition"
@@ -59,10 +58,7 @@ const Category = () => {
                   </span>
                 </div>
               ))
-            ):(
-              "NO CATEGORIES FOUND"
-            )
-          }
+            : "NO CATEGORIES FOUND"}
         </div>
       </div>
     </div>
