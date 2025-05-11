@@ -3,7 +3,7 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import { Link } from "react-router-dom";
+
 
 const HeaderTop = () => {
   const router = useRouter();
