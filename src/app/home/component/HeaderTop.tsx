@@ -1,16 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useApiHandler from "@/hooks/useApiHandler";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const HeaderTop = () => {
   const router = useRouter();
 
-
+  const {status} = useSession()
+  const isLoggedIn = status==='authenticated'
 
   return (
     <div className="font-sans">
@@ -61,13 +63,15 @@ const HeaderTop = () => {
             <FiShoppingCart />
           </button>
           </Link>
+          <Link href={!isLoggedIn? '/auth/login':'/profile'}>
           <button
             className="text-gray-700 cursor-pointer hover:text-black"
-            title="Profile"
-            onClick={() => router.push("/profile")}
+            title={isLoggedIn?`profile`:`login`}
+            
           >
-            <FiUser />
+           {isLoggedIn? <FiUser />:`Login`}
           </button>
+          </Link>
         </div>
       </header>
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center py-2 z-50 text-xl">

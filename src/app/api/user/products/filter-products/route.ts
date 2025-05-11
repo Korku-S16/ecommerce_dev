@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { role } = token;
+    
     const { subcategoryIds, page=1 } = await req.json();
 
     const limit = 10;

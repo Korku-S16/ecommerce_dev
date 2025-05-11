@@ -28,6 +28,6 @@ export const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
   gender: z.enum(["male", "female", "other", "NA"]).optional(),
   altEmail: z.string().email("Invalid alternate email").optional(),
-  altPhone: z.string().min(10, "Invalid phone").max(15).optional(),
+  altContact: z.string().min(10, "Invalid phone").max(15).optional(),
   newPassword: z.string().min(6, "Password must be at least 6 characters"),
 });

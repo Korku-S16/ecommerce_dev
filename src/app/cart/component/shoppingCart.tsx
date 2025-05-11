@@ -58,7 +58,7 @@ const ShoppingCart: React.FC = () => {
     setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
-  const subtotal = cartItems.reduce(
+  const subtotal = cartItems?.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );

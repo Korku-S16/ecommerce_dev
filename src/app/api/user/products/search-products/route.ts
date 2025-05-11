@@ -27,13 +27,6 @@ export async function POST(req: NextRequest) {
 
     const limit = 10;
 
-    if (role !== Role.CUSTOMER) {
-      return NextResponse.json({
-        message: "YOU ARE NOT AUTHORISED",
-        statusCode: 401,
-        success: false,
-      });
-    }
 
     const totalDocs = await ProductModel.countDocuments({
       name: { $regex: regex, $options: "i" },

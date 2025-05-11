@@ -1,5 +1,6 @@
 import connectToDB from "@/lib/db";
 import { AccountModel } from "@/models/account.model";
+import { UserModel } from "@/models/user/user.model";
 
 import bcrypt from "bcryptjs";
 
@@ -32,17 +33,17 @@ export async function POST(req: NextRequest) {
 
     const encryptPassword = await bcrypt.hash(password, 10);
    
-     await AccountModel.create({
+    const newUser= await AccountModel.create({
       fullName: name,
       email,
       password: encryptPassword,
     });
 
-    // if (role === "" || role === Role.CUSTOMER) {
-    //   await UserModel.create({
-    //     accountId: newUser._id,
-    //   });
-    // }
+    
+      await UserModel.create({
+        accountId: newUser._id,
+      });
+    
 
     // THIS IS FOR SELLER 
     /*

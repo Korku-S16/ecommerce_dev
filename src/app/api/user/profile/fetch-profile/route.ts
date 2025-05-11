@@ -16,10 +16,15 @@ export async function GET(req: NextRequest) {
       });
     }
     const userId = token?._id;
+    console.log(userId);
 
-    const profileDetails = await UserModel.findById(userId)
+    const profileDetails = await UserModel.findOne({
+      accountId: userId,
+    })
       .populate("profileId")
-      .populate("accountId", "fullName email phoneNO");
+      .populate("accountId", "fullName email");
+
+    console.log(profileDetails);
 
     if (!profileDetails) {
       return NextResponse.json({
