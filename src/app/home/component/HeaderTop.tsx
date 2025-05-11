@@ -40,11 +40,15 @@ const HeaderTop = () => {
           </Link>
         </nav>
         <div className="hidden sm:flex items-center space-x-4 text-xl mr-6 sm:mr-16">
-          <button title="Favorites">
+          <button
+            className="text-gray-700 cursor-pointer hover:text-black "
+            title="Favourites"
+            onClick={() => router.push("/productDetails")}
+          >
             <FiHeart />
           </button>
           <button
-            className="cursor-pointer hover:bg-gray "
+            className="text-gray-700 cursor-pointer hover:text-black "
             title="Cart"
             onClick={() => router.push("/cart")}
           >
@@ -60,10 +64,18 @@ const HeaderTop = () => {
         </div>
       </header>
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center py-2 z-50 text-xl">
-        <button title="Home">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black "
+          title="Home"
+          onClick={() => router.push("/home")}
+        >
           <FiHome />
         </button>
-        <button title="Favorites">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black"
+          title="Favorites"
+          onClick={() => router.push("/productDetails")}
+        >
           <FiHeart />
         </button>
         <button
