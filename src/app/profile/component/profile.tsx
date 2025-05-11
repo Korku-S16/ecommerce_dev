@@ -58,44 +58,70 @@ const ProfileDetails = () => {
 
   const { pending } = useFormStatus();
 
+  const formFields: Array<{
+    name: "email" | "name" | "gender" | "altEmail" | "altPhone" | "newPassword";
+    label: string;
+    type: string;
+    placeholder: string;
+  }> = [
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "johndoe@gmail.com",
+    },
+    {
+      name: "name",
+      label: "Name",
+      type: "text",
+      placeholder: "John Doe",
+    },
+    {
+      name: "altEmail",
+      label: "Alternate Email",
+      type: "email",
+      placeholder: "alternate@example.com",
+    },
+    {
+      name: "altPhone",
+      label: "Alternate Phone",
+      type: "tel",
+      placeholder: "+91xxxxxxxxxx",
+    },
+    {
+      name: "newPassword",
+      label: "New Password",
+      type: "password",
+      placeholder: "******",
+    },
+  ];
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-6">
       <div className="bg-white shadow rounded p-6 w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="johndoe@gmail.com"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="John Doe" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              {formFields.map(({ name, label, type, placeholder }) => (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type={type}
+                          placeholder={placeholder}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
               <FormField
                 control={form.control}
                 name="gender"
@@ -103,57 +129,16 @@ const ProfileDetails = () => {
                   <FormItem>
                     <FormLabel>Gender</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Male / Female / Other" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="altEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Alternate Email</FormLabel>
-                    <FormControl>
-                      <Input
+                      <select
                         {...field}
-                        type="email"
-                        placeholder="alternate@example.com"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="altPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Alternate Phone</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="tel"
-                        placeholder="+91xxxxxxxxxx"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="newPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>New Password</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="password" placeholder="******" />
+                        className="bg-white border-1 rounded p-2 w-full"
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="NA">Prefer Not to Say</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,7 +146,11 @@ const ProfileDetails = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={pending}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={pending || loading}
+            >
               {loading ? (
                 <>
                   Loading <FiLoader className="animate-spin ml-2" />

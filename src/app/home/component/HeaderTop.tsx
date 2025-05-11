@@ -3,7 +3,7 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import { FiHeart, FiUser, FiShoppingCart, FiHome } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const HeaderTop = () => {
   const router = useRouter();
@@ -25,16 +25,19 @@ const HeaderTop = () => {
           />
         </div>
         <nav className="hidden md:flex space-x-10 text-sm">
-          <a href="#" className="text-gray-700 hover:text-black font-medium">
+          <Link
+            href="/home"
+            className="text-gray-700 hover:text-black font-medium"
+          >
             Home
-          </a>
-          <a href="#" className="text-gray-500 hover:text-black font-medium">
+          </Link>
+          <Link href="#" className="text-gray-500 hover:text-black font-medium">
             About
-          </a>
+          </Link>
 
-          <a href="#" className="text-gray-500 hover:text-black font-medium">
+          <Link href="#" className="text-gray-500 hover:text-black font-medium">
             Contact Us
-          </a>
+          </Link>
         </nav>
         <div className="hidden sm:flex items-center space-x-4 text-xl mr-6 sm:mr-16">
           <button title="Favorites">
@@ -47,7 +50,11 @@ const HeaderTop = () => {
           >
             <FiShoppingCart />
           </button>
-          <button title="Profile">
+          <button
+            className="text-gray-700 cursor-pointer hover:text-black"
+            title="Profile"
+            onClick={() => router.push("/profile")}
+          >
             <FiUser />
           </button>
         </div>
@@ -66,7 +73,11 @@ const HeaderTop = () => {
         >
           <FiShoppingCart />
         </button>
-        <button title="Profile">
+        <button
+          className="text-gray-700 cursor-pointer hover:text-black"
+          title="Profile"
+          onClick={() => router.push("/profile")}
+        >
           <FiUser />
         </button>
       </div>
