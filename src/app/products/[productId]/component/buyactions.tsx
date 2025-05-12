@@ -18,6 +18,8 @@ export default function BuyActions({productId}) {
     }
   }
 
+  
+
   return (
     <div className="mt-6 flex flex-col gap-3">
       <div className="flex gap-3">
