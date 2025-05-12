@@ -6,7 +6,7 @@ import { Role } from "@/types/enumTypes";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   await connectToDB();
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -19,24 +19,21 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const { role } = token;
-    const { query, page = 1 } = await req.json();
+    
+    const {searchParams} = req.nextUrl;
+    const query = searchParams.get('query')
+    const page = Number(searchParams.get('page'))||1
+    console.log("Query:::::::::::::",query)
 
     const regex = new RegExp(`^${query}`);
+   
 
     const limit = 10;
 
-    // if (role !== Role.CUSTOMER) {
-    //   return NextResponse.json({
-    //     message: "YOU ARE NOT AUTHORISED",
-    //     statusCode: 401,
-    //     success: false,
-    //   });
-    // }
-
+    
     const totalDocs = await ProductModel.countDocuments({
       name: { $regex: regex, $options: "i" },
-    });
+    }).populate("subcategory");
 
     if (totalDocs === 0) {
       return NextResponse.json({

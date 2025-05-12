@@ -25,7 +25,7 @@ export const LoginSchema = z.object({
 });
 export const profileSchema = z.object({
   email: z.string().email("Invalid email"),
-  name: z.string().min(1, "Name is required"),
+  fullName: z.string().min(1, "Name is required"),
   gender: z.enum(["male", "female", "other", "NA"]).optional(),
   altEmail: z.string().email("Invalid alternate email").optional(),
   altContact: z.string().min(10, "Invalid phone").max(15).optional(),

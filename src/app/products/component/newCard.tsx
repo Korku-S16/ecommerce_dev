@@ -2,17 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { FiHeart } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-interface ProductCardProps {
-  productCard: {
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
-}
+import  Link  from "next/link";
 
-function Card({ productCard }: ProductCardProps) {
+// interface ProductCardProps {
+//   productCard: {
+//     name: string;
+//     price: number;
+//     imageUrl: string;
+//     _id:string
+//   };
+// }
+
+function Card({ productCard }) {
+  console.log("line 17",productCard)
   return (
-    <div className="w-64 min-h-max min-w-max h-72 pt-[24px] scale-90 pr-[16px] pb-[24px] pl-[16px] bg-[#F6F6F6] rounded-sm text-center">
+    <Link href={`/products/${productCard._id}`}
+     className="w-56 min-h-max min-w-max h-72 pt-[24px] scale-90 pr-[16px] pb-[24px] pl-[16px] bg-[#F6F6F6] rounded-sm text-center">
       <div className="flex flex-col gap-3 ">
         <div className="flex flex-row justify-between items-start ">
           <FiHeart className="w-6 h-6" />
@@ -31,7 +36,7 @@ function Card({ productCard }: ProductCardProps) {
         </div>
         <Button>Buy Now</Button>
       </div>
-    </div>
+    </Link>
   );
 }
 

@@ -1,10 +1,12 @@
+"use client"
 import ImageGallery from "./imagegallery";
 import ProductSpecs from "./productspecs";
 import BuyActions from "./buyactions";
 import Link from "next/link";
 import ProductExtraDetails from "./description";
 
-export default function ProductDetails() {
+export default function ProductDetails({productDetails}) {
+  console.log("line 8",productDetails.specifications)
   return (
     <div className="max-w-7xl mx-auto mt-12 mb-12">
       <div className="mb-6 text-sm text-gray-600 ml-4 md:ml-0">
@@ -19,11 +21,11 @@ export default function ProductDetails() {
           href="/mobiles"
           className="hover:underline hover:text-black font-medium text-base"
         >
-          Mobiles & Tablets
+          {productDetails?.subcategory?.name||"Mobiles & Tablets"}
         </Link>{" "}
         <span className="mx-1">{">"}</span>
         <span className="text-base font-medium text-black">
-          Apple iPhone 14 Pro Max
+          {productDetails?.name||"Apple iPhone 14 Pro Max"}
         </span>
       </div>
 
@@ -31,20 +33,19 @@ export default function ProductDetails() {
         <ImageGallery />
         <div>
           <h1 className="text-3xl font-semibold mb-2">
-            Apple iPhone 14 Pro Max
+            {productDetails?.name||"Apple iPhone 14 Pro Max"}
           </h1>
           <div className="flex items-center gap-2 text-xl">
-            <span className="font-bold text-black">₹83999</span>
-            <span className="line-through text-gray-400">₹90999</span>
+            <span className="font-bold text-black">₹{productDetails?.price||"83999"}</span>
+            <span className="line-through text-gray-400">₹{productDetails?.price+(productDetails?.price*0.25)||"90999"}</span>
           </div>
 
           <div className="mt-4">
             <div className="flex gap-2 mb-4">
-              {["128GB", "256GB", "512GB", "1TB"].map((size) => (
+              {productDetails?.sizes?.map((size) => (
                 <button
                   key={size}
-                  className={`px-3 py-1 border rounded ${
-                    size === "1TB" ? "bg-black text-white" : "bg-gray-100"
+                  className={`px-3 py-1 border rounded 
                   }`}
                 >
                   {size}
@@ -53,19 +54,20 @@ export default function ProductDetails() {
             </div>
           </div>
 
-          <ProductSpecs />
+          <ProductSpecs specifications={productDetails.specifications||{}
+} />
 
           <p className="text-gray-600 mt-4">
-            Enhanced capabilities thanks to an enlarged display of 6.7 inches
-            and work without recharging throughout the day. Incredible photos in
-            weak, and bright lighting; the new system with two cameras...
+           {
+            productDetails?.description ||" Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, and bright lighting; the new system with two cameras..."
+           }
           </p>
 
           <BuyActions />
         </div>
       </div>
 
-      <ProductExtraDetails />
+      {/* <ProductExtraDetails /> */}
     </div>
   );
 }

@@ -18,22 +18,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const { role } = token;
     const { category, page=1 } = await req.json();
+
+    console.log(category)
 
     const limit = 10;
 
-    if (role !== Role.CUSTOMER) {
-      return NextResponse.json({
-        message: "YOU ARE NOT AUTHORISED",
-        statusCode: 401,
-        success: false,
-      });
-    }
+ 
 
     const subcategories = await SubcategoryModel.find({ category: category });
     const subcategoriesId = subcategories.map((e) => e._id);
-
+    console.log("subcategories:::::::",subcategories)
     if (!subcategories || subcategories.length === 0) {
       return NextResponse.json({
         message: "NO PRODUCTS FOUND",

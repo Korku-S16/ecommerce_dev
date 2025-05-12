@@ -29,58 +29,61 @@ const ProfileDetails = () => {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       email: "",
-      name: "",
+      fullName: "",
       gender: "NA",
       altEmail: "",
       altContact: "",
-      newPassword: "",
+    
     },
   });
 
-
   const apiCaller = useApiHandler();
   const router = useRouter();
-  const [userProfile,setUserProfile] = useState();
- 
-  const[isProfileEditted, setIsProfileEditted] = useState(false)
+  const [userProfile, setUserProfile] = useState();
 
-  const fetchProfile = async ()=>{
-    const url = `api/user/profile/fetch-profile`
-    const res = await apiCaller(url,axios.get)
+  const [isProfileEditted, setIsProfileEditted] = useState(false);
+  const [count,setCount] = useState(0)
+  const fetchProfile = async () => {
+    const url = `api/user/profile/fetch-profile`;
+    const res = await apiCaller(url, axios.get);
     console.log(res);
-    if(res?.statusCode===200){
-      setUserProfile(res?.data.accountId)
-      console.log(res.data.accountId)
+    if (res?.statusCode === 200) {
+      setUserProfile(res?.data.accountId);
+      console.log(res.data.accountId);
+      setCount(1);
     }
-  }
+  };
 
-  useEffect(()=>{
-   fetchProfile()
-  },[isProfileEditted])
+  useEffect(() => {
+    fetchProfile();
+  }, [isProfileEditted]);
 
   const onSubmit = async (data: z.infer<typeof profileSchema>) => {
     setLoading(true);
-    const res = await apiCaller("/api/register", axios.post, {
-      // gender, altEmail, altContact
-     
-      gender: data.gender,
-      altEmail: data.altEmail,
-      altContact: data.altContact,
-    });
+    // D:\client-projects\ecommerce_dev\src\app\api\user\profile\create-profile
+    const res = await apiCaller(
+      "/api/user/profile/create-profile",
+      axios.post,
+      {
+        gender: data.gender,
+        altEmail: data.altEmail,
+        altContact: data.altContact,
+      }
+    );
     if (res.statusCode === 200) {
       router.push("/home");
       setLoading(false);
     }
     console.log(res);
   };
-  const toggleEdit = ()=>{
-    setIsProfileEditted(!isProfileEditted)
-  }
+  const toggleEdit = () => {
+    setIsProfileEditted(!isProfileEditted);
+  };
 
   const { pending } = useFormStatus();
 
   const formFields: Array<{
-    name: "email" | "fullName" | "gender" | "altEmail" | "altPhone" ;
+    name: "email" | "fullName" | "gender" | "altEmail" | "altPhone";
     label: string;
     type: string;
     placeholder: string;
@@ -117,16 +120,25 @@ const ProfileDetails = () => {
     // },
   ];
 
+  useEffect(() => {
+    if (userProfile ) {
+      form.reset(userProfile);
+    }
+  }, [userProfile]);
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-6">
-      
       <div className="bg-white shadow rounded p-6 w-full">
         <div className="flex justify-end">
-        <Button 
-        onClick={toggleEdit}
-        variant="outline" className="cursor-pointer"><FaPen ></FaPen></Button>
+          <Button
+            onClick={toggleEdit}
+            variant="outline"
+            className="cursor-pointer"
+          >
+            <FaPen></FaPen>
+          </Button>
         </div>
-      
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 `}>
             <div className="space-y-4">
@@ -140,13 +152,18 @@ const ProfileDetails = () => {
                       <FormLabel>{label}</FormLabel>
                       <FormControl>
                         <Input
-                        disabled={!(name === 'fullName' || name === 'email') && !isProfileEditted || !userProfile}
-                        className={`${isProfileEditted?``:`cursor-not-allowed`}`}
+                          disabled={name === "email" || !isProfileEditted}
+                         
+
+                          className={`${
+                            isProfileEditted
+                              ? ``
+                              : `cursor-not-allowed text-black`
+                          } `}
                           {...field}
                           type={type}
                           placeholder={placeholder}
-                          value={userProfile ? userProfile[name] || "" : ""}
-
+                          // value={userProfile ? userProfile[name] || "" : ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -157,17 +174,18 @@ const ProfileDetails = () => {
               <FormField
                 control={form.control}
                 name="gender"
-                
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Gender</FormLabel>
                     <FormControl>
                       <select
-                      disabled={!isProfileEditted}
-                      // className={`${isProfileEditted?``:`cursor-not-allowed`}`}
+                        disabled={!isProfileEditted}
+                        // className={`${isProfileEditted?``:`cursor-not-allowed`}`}
                         {...field}
-                        className={`${isProfileEditted?``:`cursor-not-allowed`} bg-white border-1 rounded p-2 w-full `}
-                        // defaultValue={userProfile}
+                        className={`${
+                          isProfileEditted ? `` : `cursor-not-allowed`
+                        } bg-white border-1 rounded p-2 w-full `}
+                        // value={userProfile?.gender || ""}
                       >
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -182,23 +200,23 @@ const ProfileDetails = () => {
               />
             </div>
 
-            {
-              isProfileEditted?(
-                <Button
-              type="submit"
-              className="w-full"
-              disabled={pending || loading}
-            >
-              {loading ? (
-                <>
-                  Loading <FiLoader className="animate-spin ml-2" />
-                </>
-              ) : (
-                "Save Profile"
-              )}
-            </Button>
-              ):("")
-            }
+            {isProfileEditted ? (
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={pending || loading}
+              >
+                {loading ? (
+                  <>
+                    Loading <FiLoader className="animate-spin ml-2" />
+                  </>
+                ) : (
+                  "Save Profile"
+                )}
+              </Button>
+            ) : (
+              ""
+            )}
           </form>
         </Form>
       </div>

@@ -1,14 +1,13 @@
 import connectToDB from "@/lib/db";
-import { ProductModel } from "@/models/product/product.model";
-import { Role } from "@/types/enumTypes";
+import { SubcategoryModel } from "@/models/product/subCategory.model";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   await connectToDB();
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    
+
     if (!token) {
       return NextResponse.json({
         message: "LOGIN FIRST",
@@ -16,26 +15,24 @@ export async function POST(req: NextRequest) {
         success: false,
       });
     }
-
-    
-
-   
-      
-    const products = await ProductModel.find({}).populate("subcategory");
-
-    if (!products || products.length == 0) {
+    const {searchParams} = req.nextUrl;
+    const category = searchParams.get('category')
+    console.log("line 20 ",category)
+    const subcategories = await SubcategoryModel.find({category}).populate("category");
+    console.log("Subcategories line 21",subcategories)
+    if (!subcategories) {
       return NextResponse.json({
-        message: "NO PRODUCTS FOUND",
+        message: "UNABLE TO FETCH SUBCATEGORIES",
         statusCode: 404,
         success: false,
       });
     }
 
     return NextResponse.json({
-      message: "SUCCESSFULLY FETCHED PRODUCT",
+      message: "SUCCESSFULLY FETCHED SUBCATEGORIES",
       statusCode: 200,
       success: true,
-      data: products,
+      data: subcategories,
     });
   } catch (error) {
     const errMsg =

@@ -7,40 +7,58 @@ import Link from "next/link";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
+
+// const searchURLs = [
+//   {page:""}
+// ]
+
 const HeaderTop = () => {
   const router = useRouter();
 
   const {status} = useSession()
   const isLoggedIn = status==='authenticated'
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery,setDebouncedQuery] = useState("")
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-    setLoading(true);
-    try {
-      const res = await axios.post("/api/user/products/search-products", {
-        query: searchQuery,
-        page: 1,
-      });
-      console.log("Search results:", res.data);
 
-      if (res.data.success) {
-        setSearchResults(res.data.data.products);
-      } else {
-        setSearchResults([]);
-      }
-    } catch (error) {
-      console.error("Search error:", error);
-      setSearchResults([]);
-    } finally {
-      setLoading(false);
-    }
+   useEffect(()=>{
+    const handler = setTimeout(()=>{
+      setDebouncedQuery(searchQuery);
+    },1000);
+
+    return ()=>clearTimeout(handler)
+   },[searchQuery])
+ 
+   
+
+  const handleSearch =  () => {
+    if (!debouncedQuery.trim()) return;
+    setLoading(true);
+    // try {
+    //   const res = await axios.post("/api/user/products/search-products", {
+    //     query: searchQuery,
+    //     page: 1,
+    //   });
+    //   console.log("Search results:", res.data);
+
+    //   if (res.data.success) {
+    //     setSearchResults(res.data.data.products);
+    //   } else {
+    //     setSearchResults([]);
+    //   }
+    // } catch (error) {
+    //   console.error("Search error:", error);
+    //   setSearchResults([]);
+    // } finally {
+    //   setLoading(false);
+    // }
+    router.push(`/products?query=${encodeURIComponent(debouncedQuery)}`)
   };
-  useEffect(() => {
-    handleSearch();
-  }, []);
+  // useEffect(() => {
+  //   handleSearch();
+  // }, [debouncedQuery]);
 
   return (
     <div className="font-sans">
@@ -59,7 +77,7 @@ const HeaderTop = () => {
           <BsSearch
             className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
             size={18}
-            onClick={handleSearch}
+
           />
         </div>
 

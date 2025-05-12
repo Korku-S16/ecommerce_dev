@@ -5,17 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   await connectToDB();
-
   try {
     const { productId } = await req.json();
-
-    if (!productId) {
-      return NextResponse.json({
-        message: "PRODUCT ID IS REQUIRED",
-        statusCode: 400,
-        success: false,
-      });
-    }
 
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
@@ -27,19 +18,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    let wishList = await WishlistModel.findOne({ userId: token._id });
+    const wishList = await WishlistModel.findOne({ userId: token._id });
 
     if (!wishList) {
-      // Create a new wishlist if not found
-      wishList = await WishlistModel.create({
-        userId: token._id,
-        products: [{ productId }],
-      });
-
       return NextResponse.json({
-        message: "WISHLIST CREATED AND PRODUCT ADDED",
-        statusCode: 201,
-        success: true,
+        message: "WISHLIST NOT FOUND",
+        statusCode: 404,
+        success: false,
       });
     }
 
@@ -47,19 +32,22 @@ export async function POST(req: NextRequest) {
       (product) => product.productId.toString() === productId
     );
 
-    if (isProduct) {
+    if (!isProduct) {
       return NextResponse.json({
-        message: "PRODUCT ALREADY IN WISHLIST",
-        statusCode: 409,
+        message: "PRODUCT NOT FOUND IN WISHLIST",
+        statusCode: 404,
         success: false,
       });
     }
 
-    wishList.products.push(productId);
+    wishList.products = wishList.products.filter(
+      (e) => e.productId.toString() !== productId
+    );
+
     await wishList.save();
 
     return NextResponse.json({
-      message: "PRODUCT ADDED TO WISHLIST",
+      message: "PRODUCT REMOVED FROM WISHLIST",
       statusCode: 200,
       success: true,
     });

@@ -1,24 +1,8 @@
 "use client";
 import useApiHandler from "@/hooks/useApiHandler";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import {
-  FaMobileAlt,
-  FaTshirt,
-  FaBlender,
-  FaMagic,
-  FaTv,
-  FaGamepad,
-} from "react-icons/fa";
-
-// const categories = [
-//   { label: "Mobiles & Tablets", icon: <FaMobileAlt /> },
-//   { label: "Tv & Appliances", icon: <FaTv /> },
-//   { label: "Fashion", icon: <FaTshirt /> },
-//   { label: "Kitchen", icon: <FaBlender /> },
-//   { label: "Beauty", icon: <FaMagic /> },
-//   { label: "Others", icon: <FaGamepad /> },
-// ];
 
 const Category = () => {
   const apiCaller = useApiHandler();
@@ -39,6 +23,14 @@ const Category = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const router = useRouter()
+  const fetchProducts = async (categoryId)=>{
+    // const url = `/api/user/products/fetch-products-by-category`
+    // const res = await apiCaller(url,axios.post,{category:categoryId})
+    router.push(`/products?category=${encodeURIComponent(categoryId)}`)
+    
+  }
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="px-4 sm:px-16 lg:px-20 py-10">
@@ -49,10 +41,11 @@ const Category = () => {
           {categories?.length > 0
             ? categories?.map((cat, index) => (
                 <div
+                 onClick={()=>fetchProducts(cat._id)}
                   key={index}
                   className="flex flex-col items-center justify-center bg-gray-100 rounded-lg px-6 py-10 w-36 h-36 hover:bg-gray-200 transition"
                 >
-                  <div className="text-3xl text-black mb-2">{cat.image}</div>
+                  <img className="w-20 h-20" src={cat.image}></img>
                   <span className="text-sm text-center text-black font-medium">
                     {cat.name}
                   </span>
