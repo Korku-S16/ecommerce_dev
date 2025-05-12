@@ -6,11 +6,12 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 
 const PrivacyPolicyPage = () => {
     return (
-        <div className="flex flex-col min-h-screen bg-gray-700 text-white">
+        <div className="flex flex-col min-h-screen bg-white text-black">
             <HeaderTop />
+            <div className="flex-grow overflow-y-auto">
             <Container>
                 <div className="flex justify-between items-center mt-8">
-                    <h1 className="text-3xl font-bold text-center flex-grow text-white">
+                    <h1 className="text-3xl font-bold text-center flex-grow text-black">
                         PRIVACY POLICY
                     </h1>
                     <div className="flex items-center space-x-2">
@@ -25,7 +26,7 @@ const PrivacyPolicyPage = () => {
                         </select> */}
                     </div>
                 </div>
-                <div className="mt-6 overflow-y-auto max-h-[70vh] space-y-4 text-base leading-relaxed">
+                <div className="mt-6 overflow-y-auto space-y-4 text-base leading-relaxed">
                     <p>
                         Disclaimer: In case of any discrepancy or difference, the English
                         version will take precedence over the translation.
@@ -115,6 +116,7 @@ const PrivacyPolicyPage = () => {
                     <p className="text-sm text-gray-400 mt-4">Last Updated: [LAST_UPDATED_DATE]</p>
                 </div>
             </Container>
+            </div>
             <Footer />
         </div>
     );
