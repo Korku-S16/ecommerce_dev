@@ -12,17 +12,17 @@ const ShoppingCartItem: React.FC<Props> = ({
   onQuantityChange,
   onRemove,
 }) => {
-  console.log(item)
+  console.log(item);
   return (
     <div className="flex items-center justify-between border-b py-4">
       <div className="flex items-center gap-4">
         <img
-          src={item.image}
-          alt={item.title}
+          src={item.productId.image}
+          alt={item.productId.name}
           className="w-24 h-24 object-cover"
         />
         <div>
-          <div className="font-semibold">{item.title}</div>
+          <div className="font-semibold">{item.productId.name}</div>
           <div className="text-sm text-gray-500">#{item.subtitle}</div>
         </div>
       </div>
@@ -38,7 +38,7 @@ const ShoppingCartItem: React.FC<Props> = ({
           +
         </button>
       </div>
-      <div className="font-semibold">₹{item.price}</div>
+      <div className="font-semibold">₹{item.productId.price}</div>
       <button onClick={() => onRemove(item.id)}>×</button>
     </div>
   );

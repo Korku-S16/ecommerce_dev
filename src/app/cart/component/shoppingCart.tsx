@@ -38,35 +38,12 @@ const ShoppingCart: React.FC = () => {
 
   const apiCaller = useApiHandler();
 
-  const productCatalog: Record<
-    string,
-    { title: string; price: number; image: string }
-  > = {
-    "6821f38dab5e7befa9a8fb77": {
-      title: "Apple iPhone 14 Pro Max 128Gb Deep Purple",
-      price: 83999,
-      image: "/1.png",
-    },
-    // Add more products if needed
-  };
-
   async function handleFetchCart() {
     const res = await apiCaller(`/api/user/cart/fetch-cartlist`, axios.get);
     const productsInCart = res.data?.[0]?.products ?? [];
+    console.log(productsInCart);
 
-    const mappedItems: CartItem[] = productsInCart.map((product: any) => {
-      const productInfo = productCatalog[product.productId];
-      return {
-        id: product.productId,
-        title: productInfo?.title ?? "Unknown Product",
-        subtitle: product.productId,
-        price: productInfo?.price ?? 83999,
-        image: productInfo?.image ?? "/1.png",
-        quantity: product.quantity ?? 1,
-      };
-    });
-
-    setCartItems(mappedItems);
+    setCartItems(productsInCart);
   }
 
   useEffect(() => {
