@@ -1,13 +1,4 @@
 
-import { useState } from "react";
-import {
-  FaMobileAlt,
-  FaMicrochip,
-  FaMemory,
-  FaCamera,
-  FaBatteryFull,
-} from "react-icons/fa";
-
 export default function ProductSpecs({specifications}) {
   Object.entries(specifications)?.map(([key, value]) => (
     <Spec label={key} value={value} key={key} />
