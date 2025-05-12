@@ -20,6 +20,7 @@
     "clsx": "^2.1.1",
     "ecomm_dev": "file:",
     "embla-carousel-react": "^8.6.0",
+    "lightningcss": "^1.30.0",
     "lucide-react": "^0.507.0",
     "mongoose": "^8.14.1",
     "next": "15.3.1",
