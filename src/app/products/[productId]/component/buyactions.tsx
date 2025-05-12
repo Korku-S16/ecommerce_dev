@@ -13,6 +13,9 @@ export default function BuyActions({productId}) {
     const url = `/api/user/cart/update-cart`
     const res = await apiCaller(url,axios.post,{productId,quantity:1})
     console.log(res)
+    if(res.statusCode===200){
+      router.push('/cart')
+    }
   }
 
   return (

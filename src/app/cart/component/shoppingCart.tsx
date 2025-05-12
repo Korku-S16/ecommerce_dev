@@ -41,7 +41,7 @@ const ShoppingCart: React.FC = () => {
   async function handleFetchCart() {
     const res = await apiCaller(`/api/user/cart/fetch-cartlist`, axios.get);
     console.log(res);
-    setCartItems(res.data);
+    setCartItems(res?.data[0]?.products);
   }
   useEffect(() => {
     handleFetchCart();
@@ -74,7 +74,7 @@ const ShoppingCart: React.FC = () => {
         ) : (
           cartItems?.map((item) => (
             <ShoppingCartItem
-              key={item.id}
+              key={item._id}
               item={item}
               onQuantityChange={handleQuantityChange}
               onRemove={handleRemove}

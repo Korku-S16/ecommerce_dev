@@ -17,7 +17,7 @@ try {
       }
     
       const cartList = await CartModel.find({ userId: token._id }).populate(
-        "products"
+        "products.productId"
       );
     
       if (!cartList || cartList.length === 0) {

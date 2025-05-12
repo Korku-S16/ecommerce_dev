@@ -1,4 +1,4 @@
-import React from 'react';
+"use client"
 import HeaderTop from "@/app/home/component/HeaderTop";
 import Footer from "@/app/home/component/footer";
 import Container from "@/app/home/component/container";

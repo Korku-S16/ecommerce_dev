@@ -12,6 +12,7 @@ const ShoppingCartItem: React.FC<Props> = ({
   onQuantityChange,
   onRemove,
 }) => {
+  console.log(item)
   return (
     <div className="flex items-center justify-between border-b py-4">
       <div className="flex items-center gap-4">
