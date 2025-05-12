@@ -1,3 +1,4 @@
+"use client";
 import ShoppingCart from "../cart/component/shoppingCart";
 import React from "react";
 

@@ -41,7 +41,7 @@ const ShoppingCart: React.FC = () => {
   async function handleFetchCart() {
     const res = await apiCaller(`/api/user/cart/fetch-cartlist`, axios.get);
     console.log(res);
-    setCartItems(res.data)
+    setCartItems(res.data);
   }
   useEffect(() => {
     handleFetchCart();

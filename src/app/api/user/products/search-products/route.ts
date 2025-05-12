@@ -22,11 +22,17 @@ export async function POST(req: NextRequest) {
     const { role } = token;
     const { query, page = 1 } = await req.json();
 
-    // matching with start character and case insensitive
     const regex = new RegExp(`^${query}`);
 
     const limit = 10;
 
+    // if (role !== Role.CUSTOMER) {
+    //   return NextResponse.json({
+    //     message: "YOU ARE NOT AUTHORISED",
+    //     statusCode: 401,
+    //     success: false,
+    //   });
+    // }
 
     const totalDocs = await ProductModel.countDocuments({
       name: { $regex: regex, $options: "i" },
