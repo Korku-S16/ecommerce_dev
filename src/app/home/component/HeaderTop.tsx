@@ -7,7 +7,6 @@ import Link from "next/link";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-
 // const searchURLs = [
 //   {page:""}
 // ]
@@ -15,25 +14,22 @@ import { useSession } from "next-auth/react";
 const HeaderTop = () => {
   const router = useRouter();
 
-  const {status} = useSession()
-  const isLoggedIn = status==='authenticated'
+  const { status } = useSession();
+  const isLoggedIn = status === "authenticated";
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery,setDebouncedQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-
-   useEffect(()=>{
-    const handler = setTimeout(()=>{
+  useEffect(() => {
+    const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    },1000);
+    }, 1000);
 
-    return ()=>clearTimeout(handler)
-   },[searchQuery])
- 
-   
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
-  const handleSearch =  () => {
+  const handleSearch = () => {
     if (!debouncedQuery.trim()) return;
     setLoading(true);
     // try {
@@ -54,7 +50,7 @@ const HeaderTop = () => {
     // } finally {
     //   setLoading(false);
     // }
-    router.push(`/products?query=${encodeURIComponent(debouncedQuery)}`)
+    router.push(`/products?query=${encodeURIComponent(debouncedQuery)}`);
   };
   // useEffect(() => {
   //   handleSearch();
@@ -77,7 +73,6 @@ const HeaderTop = () => {
           <BsSearch
             className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
             size={18}
-
           />
         </div>
 
@@ -88,10 +83,16 @@ const HeaderTop = () => {
           >
             Home
           </Link>
-          <Link href="#" className="text-gray-500 hover:text-black font-medium">
+          <Link
+            href="/about"
+            className="text-gray-500 hover:text-black font-medium"
+          >
             About
           </Link>
-          <Link href="#" className="text-gray-500 hover:text-black font-medium">
+          <Link
+            href="/contactus"
+            className="text-gray-500 hover:text-black font-medium"
+          >
             Contact Us
           </Link>
         </nav>
@@ -106,14 +107,13 @@ const HeaderTop = () => {
           <Link href="/cart">
             <FiShoppingCart />
           </Link>
-          <Link href={!isLoggedIn? '/auth/login':'/profile'}>
-          <button
-            className="text-gray-700 cursor-pointer hover:text-black"
-            title={isLoggedIn?`profile`:`login`}
-            
-          >
-           {isLoggedIn? <FiUser />:`Login`}
-          </button>
+          <Link href={!isLoggedIn ? "/auth/login" : "/profile"}>
+            <button
+              className="text-gray-700 cursor-pointer hover:text-black"
+              title={isLoggedIn ? `profile` : `login`}
+            >
+              {isLoggedIn ? <FiUser /> : `Login`}
+            </button>
           </Link>
         </div>
       </header>

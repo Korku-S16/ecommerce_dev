@@ -5,15 +5,22 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaShippingFast, FaBoxOpen, FaShieldAlt } from "react-icons/fa";
 
-export default function BuyActions({productId}) {
+export default function BuyActions({ productId }) {
   const router = useRouter();
-  const apiCaller = useApiHandler()
+  const apiCaller = useApiHandler();
 
-  const handleCart = async()=>{
-    const url = `/api/user/cart/update-cart`
-    const res = await apiCaller(url,axios.post,{productId,quantity:1})
-    console.log(res)
-  }
+  const handleCart = async () => {
+    const url = `/api/user/cart/update-cart`;
+    const res = await apiCaller(url, axios.post, { productId, quantity: 1 });
+
+    console.log(res);
+
+    if (res?.statusCode === 200) {
+      router.push("/cart");
+    } else {
+      console.error("Failed to update cart:", res);
+    }
+  };
 
   return (
     <div className="mt-6 flex flex-col gap-3">
