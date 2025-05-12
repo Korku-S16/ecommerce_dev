@@ -63,7 +63,7 @@ export default function ProductDetails({productDetails}) {
            }
           </p>
 
-          <BuyActions />
+          <BuyActions productId={productDetails._id} />
         </div>
       </div>
 
