@@ -100,7 +100,7 @@ const ShoppingCart: React.FC = () => {
         ) : (
           cartItems?.map((item) => (
             <ShoppingCartItem
-              key={item.id}
+              key={item._id}
               item={item}
               onQuantityChange={handleQuantityChange}
               onRemove={handleRemove}
