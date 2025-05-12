@@ -19,9 +19,11 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { LoginSchema } from "../../../schema";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -30,10 +32,22 @@ const LoginForm = () => {
       password: "",
     },
   });
-
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+  const router = useRouter();
+  const { status } = useSession();
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+  
     setLoading(true);
-    console.log(data);
+    const res = await signIn("credentials", {
+      username: data.email,
+      password: data.password,
+      redirect:false
+    });
+  
+    console.log(res);
+
+    if(res?.ok){
+      router.push('/home')
+    }
   };
 
   const { pending } = useFormStatus();
@@ -45,7 +59,7 @@ const LoginForm = () => {
       backbuttonlabel="Don't have an account? Register here."
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" method="POST">
           <div className="space-y-4">
             <FormField
               control={form.control}

@@ -19,6 +19,10 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { RegisterSchema } from "../../../schema";
+import useApiHandler from "@/hooks/useApiHandler";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { FiLoader } from "react-icons/fi";
 
 const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
@@ -31,10 +35,18 @@ const RegisterForm = () => {
         confirmPassword: "",
       },
     });
-  
-    const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-      setLoading(true);
-      console.log(data);
+
+    const apiCaller = useApiHandler();
+    const router = useRouter()
+    const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+      setLoading(true)
+      const res = await apiCaller("/api/register",axios.post,{email:data.email, name:data.name, password:data.password })
+      if(res.statusCode===200){
+          router.push('/auth/login')
+          setLoading(false)   
+      }
+      
+      console.log(res);
     };
   
     const { pending } = useFormStatus();
@@ -106,7 +118,10 @@ const RegisterForm = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={pending}>
-              {loading ? "Loading..." : "Register"}
+              {loading ? <>
+              Loading <FiLoader className=" animate-spin "/>
+              </>
+               : "Register"}
             </Button>
           </form>
         </Form>
