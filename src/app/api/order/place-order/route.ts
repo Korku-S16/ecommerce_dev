@@ -66,6 +66,8 @@ export async function POST(req: NextRequest) {
           
 
     const creatingOrder = await razorpay.orders.create(options)
+    
+    console.log("CREATING ORDER ",creatingOrder)
 
     if (!creatingOrder) {
       return NextResponse.json({
@@ -83,7 +85,7 @@ export async function POST(req: NextRequest) {
       
     });
 
-    
+
   } catch (error) {
     const errMsg =
       error instanceof Error ? error.message : "SOMETHING WENT WRONG";
