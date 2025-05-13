@@ -5,7 +5,7 @@ import { OrderModel } from "@/models/user/userOrders.model";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
     await connectToDB()
 try {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -39,13 +39,17 @@ try {
       })
      
 
-      await OrderDelivery.create(createNewOrder._id)
+      await OrderDelivery.create({
+        orderId:createNewOrder._id,
+        shippingAddress:null,
+      })
       
 
       return NextResponse.json({
         message:"SUCCESSFULLY CREATED ORDER  ",
         statusCode:200,
         success:true,
+        data:{orderId:createNewOrder._id}
       })
     }
  catch (error) {

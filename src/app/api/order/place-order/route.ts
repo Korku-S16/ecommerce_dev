@@ -74,13 +74,16 @@ export async function POST(req: NextRequest) {
         success: false,
       });
     }
-
+    order.paymentId=creatingOrder.id
+    await order.save()
     return NextResponse.json({
       message: "ORDERS CREATED SUCCESSFULLY",
       statusCode: 200,
       success: true,
+      
     });
 
+    
   } catch (error) {
     const errMsg =
       error instanceof Error ? error.message : "SOMETHING WENT WRONG";

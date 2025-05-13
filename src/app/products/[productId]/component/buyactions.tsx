@@ -18,12 +18,24 @@ export default function BuyActions({productId}) {
     }
   }
 
+  const handleCreateOrder = async()=>{
+    const url = `/api/order/create-order`
+    const res = await apiCaller(url,axios.post,{productId,quantity:1}) 
+    console.log(res);
+    if(res.statusCode===200){
+      router.push(`/step3?orderId=${res.data.orderId}`)
+    }
+  }
+
+
   
 
   return (
     <div className="mt-6 flex flex-col gap-3">
       <div className="flex gap-3">
-        <button className="border px-4 py-2 rounded">Buy Now</button>
+        <button 
+        onClick={handleCreateOrder}
+        className="border px-4 py-2 rounded">Buy Now</button>
         <button
           onClick={handleCart}
           className="bg-black text-white px-4 py-2 rounded"

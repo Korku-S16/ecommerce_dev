@@ -1,16 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TfiLocationPin } from "react-icons/tfi";
 import { FaShippingFast } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
+import useApiHandler from "@/hooks/useApiHandler";
+import axios from "axios";
 
 const CheckoutPage = () => {
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
+  const searchParams = useSearchParams()
 
+  const orderId = searchParams.get('orderId')
+
+  const apiCaller = useApiHandler()
+
+  const fetchAddresses =async ()=>{
+   const url = `/api/user/address/fetch-address`
+   const res = await apiCaller(url,axios.get)
+   console.log(res)
+  }
+
+  useEffect(()=>{
+    fetchAddresses()
+  },[])
+  
   const [addresses, setAddresses] = useState([
     {
       label: "4/4/1 Bharat Apartment 4C",

@@ -33,7 +33,7 @@ const orderSchema = new Schema<Order>(
       shippingAddress: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"UserAddressModel",
-        required: true,
+        // required: true,
       },
       deliveryDate: {
         type: Date,

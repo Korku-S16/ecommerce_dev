@@ -1,4 +1,5 @@
-import { IndianState } from "@/src/types/enumTypes";
+import { IndianState } from "../../types/enumTypes";
+
 import mongoose, { Model, Schema } from "mongoose";
 
 
