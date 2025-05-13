@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTwitter, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
@@ -29,8 +30,6 @@ const Footer: React.FC = () => {
               <li>Gift cards</li>
               <li>Credit and payment</li>
               <li>Service contracts</li>
-              <li>Non-cash account</li>
-              <li>Payment</li>
             </ul>
           </div>
 
@@ -38,22 +37,23 @@ const Footer: React.FC = () => {
             <h3 className="text-base font-semibold mb-3">
               Assistance to the buyer
             </h3>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>Find an order</li>
-              <li>Terms of delivery</li>
-              <li>Exchange and return of goods</li>
-              <li>Guarantee</li>
-              <li>Frequently asked questions</li>
-              <li>Terms of use of the site</li>
+            <ul className="space-y-2 space-x-2 text-sm text-gray-400">
+              <Link href="/TermsConditions" className="hover:text-gray-200">
+                <li>Terms & condition of delivery</li>
+              </Link>
+              <Link href="/privacypolicypage" className="hover:text-gray-200">
+                <li>Privacy Policy</li>
+              </Link>
+              <Link href="/returnpolicy" className="hover:text-gray-200">
+                <li>Return Policy</li>
+              </Link>
             </ul>
           </div>
 
           <div>
             <h3 className="text-base font-semibold mb-3">Let Us Help You</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>Your Account</li>
-              <li>Return Centers</li>
-              <li>Recalls and Product safety alerts</li>
+              <li>Frequently asked questions</li>
               <li>Purchase Protection</li>
               <li>Delivery Policy</li>
               <li>Help</li>
